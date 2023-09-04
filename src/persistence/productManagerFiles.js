@@ -1,6 +1,6 @@
-/*const fs = require("fs");
+import fs from "fs";
 
-class ProductManager {
+export class ProductManager {
     constructor(filePath){
         this.filePath = filePath;
     }
@@ -72,10 +72,10 @@ class ProductManager {
                 if (productoEncontrado) {
                     return productoEncontrado;
                 } else {
-                    throw new Error("Producto no encontrado");
+                    throw new Error("Producto no encontrado, articulo inexistente");
                 }
             } else {
-                throw new Error("Archivo inexistente");
+                throw new Error("Archivo inexistente Art desconocido");
             }
         } catch (error) {
             console.log(error.message);
@@ -103,7 +103,7 @@ class ProductManager {
                 await fs.promises.writeFile(this.filePath, JSON.stringify(contenidoJson, null, "\t"));
                 console.log("Producto actualizado exitosamente");
             } else {
-                throw new Error("Archivo inexistente");
+                throw new Error("Archivo inexistente No se puede actualizar");
             }
         } catch (error) {
             console.log(error.message);
@@ -122,7 +122,7 @@ class ProductManager {
                 await fs.promises.writeFile(this.filePath, JSON.stringify(updatedProducts, null, "\t"));
                 console.log("Producto eliminado exitosamente");
             } else {
-                throw new Error("Archivo inexistente");
+                throw new Error("Archivo inexistente imposible eliminar");
             }
         } catch (error) {
             console.log(error.message);
@@ -131,7 +131,7 @@ class ProductManager {
     }
 }
 
-const operations = async () => {
+/*const operations = async () => {
     try {
         const listProduct = new ProductManager("./entregas/listaProductos.json");
 
