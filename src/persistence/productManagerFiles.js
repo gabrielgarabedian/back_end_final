@@ -89,25 +89,23 @@ export class ProductManager {
             if (this.fileExist()) {
                 const contenido = await fs.promises.readFile(this.filePath, "utf-8");
                 let contenidoJson = JSON.parse(contenido);
-                
                 contenidoJson = contenidoJson.map(producto => {
                     if (producto.id === id) {
                         return {
                             ...producto,
                             ...updatedFields,
-                            id: producto.id // Mantiene el ID original 
+         
+                            id: producto.id // Mantiene el ID original
                         };
                     }
-                    return producto;
+                    return producto; 
                 });
-                
                 await fs.promises.writeFile(this.filePath, JSON.stringify(contenidoJson, null, "\t"));
                 console.log("Producto actualizado exitosamente");
             } else {
                 throw new Error("Archivo inexistente No se puede actualizar");
             }
         } catch (error) {
-            console.log(error.message);
             throw error;
         }
     }

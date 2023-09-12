@@ -15,6 +15,17 @@ router.post("/", async (req, res) => {
     }
 });
 
+router.put('/:pid', async (req, res) => {
+    try {
+        const productId = parseInt(req.params.pid);
+        const updatedFields = req.body;
+        await productsService.updateProduct(productId, updatedFields);
+        res.json({ message: "Producto actualizado exitosamente.", data: productId });
+    } catch (error) {
+        res.status(500).json({ error: "Ocurrió un error al actualizar el producto." });
+    }
+});
+
 router.get("/", async (req, res) => {
     try {
         const limit = parseInt(req.query.limit);
