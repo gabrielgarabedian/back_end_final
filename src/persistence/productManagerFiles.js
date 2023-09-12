@@ -1,6 +1,7 @@
 import fs from "fs";
 
 export class ProductManager {
+    
     constructor(filePath){
         this.filePath = filePath;
     }
@@ -20,33 +21,33 @@ export class ProductManager {
             }
             
         } catch (error) {
-            console.log(error.message);
+            //console.log(error.message);
             throw error;
         }        
     }
 
-    async addProduct(title, description, price, img, stock, code){
+    async addProduct(title, description, price, stock, code) {
         try {
-            if (this.fileExist()){
-                const contenido = await fs.promises.readFile(this.filePath,"utf-8");
+            if (this.fileExist()) {
+                const contenido = await fs.promises.readFile(this.filePath, "utf-8");
                 const contenidoJson = JSON.parse(contenido);
                 const newId = contenidoJson.length > 0 ? contenidoJson[contenidoJson.length - 1].id + 1 : 1;
-                
-                if (!title || !description || !price || !img || !stock || !code){
-                    console.log("No se permiten campos vacíos");
+            
+                // Validar que los campos no estén vacíos y sean numéricos
+                if (!title || !description || isNaN(price) || isNaN(stock) || isNaN(code)) {
+                    throw new Error("No se permiten campos vacíos y los campos price, stock, codigo deben ser numéricos");
                 } else {
-                    const isRegistered = contenidoJson.some(product => product.code === code);
+                    const isRegistered = contenidoJson.some(product => product.code === parseInt(code));
                     if (isRegistered) {
-                        console.log("ERROR: código ya registrado");
+                        throw new Error("codigo Ya registrado");
                     } else {
                         const newProduct = {
                             id: newId,
                             title,
                             description,
-                            price,
-                            img,
-                            stock,
-                            code,
+                            price: parseFloat(price),
+                            stock: parseInt(stock),
+                            code:parseInt(code),
                         };
                         contenidoJson.push(newProduct);
                         await fs.promises.writeFile(this.filePath, JSON.stringify(contenidoJson, null, "\t"));
@@ -54,15 +55,15 @@ export class ProductManager {
                     }
                 }
             } else {
-                throw new Error("El articulo no se pudo agregar");
+                throw new Error("El artículo no se pudo agregar");
             }
-            
         } catch (error) {
             console.log(error.message);
             throw error;
         }
     }
 
+    
     async getProductById(id) {
         try {
             if (this.fileExist()) {
@@ -82,7 +83,7 @@ export class ProductManager {
             throw error;
         }
     }
-
+    
     async updateProduct(id, updatedFields) {
         try {
             if (this.fileExist()) {
@@ -110,7 +111,7 @@ export class ProductManager {
             throw error;
         }
     }
-
+    
     async deleteProduct(id) {
         try {
             if (this.fileExist()) {
@@ -134,14 +135,14 @@ export class ProductManager {
 /*const operations = async () => {
     try {
         const listProduct = new ProductManager("./entregas/listaProductos.json");
-
+        
         // Ejemplo:
         const product = await listProduct.getProducts();
         console.log(product);
-
+        
         /*const product = await listProduct.addProduct("Nuevo producto", "Descripción del nuevo producto", 10, "imagen.jpg", 5, "123456");
         console.log(product);
-
+        
         const product = await listProduct.addProduct("Nuevo producto2", "Descripción del nuevo producto", 10, "imagen.jpg", 5, "125583456");
         console.log(product);
         
@@ -159,3 +160,41 @@ export class ProductManager {
     }
 }
 operations();*/
+
+/*async addProduct(title,description,price,stock,code){
+    try {
+        if (this.fileExist()){
+            const contenido = await fs.promises.readFile(this.filePath,"utf-8");
+            const contenidoJson = JSON.parse(contenido);
+            const newId = contenidoJson.length > 0 ? contenidoJson[contenidoJson.length - 1].id + 1 : 1;
+            
+            if (!title || !description || !price || !stock || !code){
+                console.log("No se permiten campos vacíos");
+            } else {
+                const isRegistered = contenidoJson.some(product => product.code === code);
+                if (isRegistered) {
+                    console.log("ERROR: código ya registrado");
+                } else {
+                    const newProduct = {
+                        id: newId,
+                        title,
+                        description,
+                        price,
+                        //img,
+                        stock,
+                        code,
+                    };
+                    contenidoJson.push(newProduct);
+                    await fs.promises.writeFile(this.filePath, JSON.stringify(contenidoJson, null, "\t"));
+                    console.log("Producto agregado exitosamente");
+                }
+            }
+        } else {
+            throw new Error("El articulo no se pudo agregar");
+        }
+        
+    } catch (error) {
+        console.log(error.message);
+        throw error;
+    }
+}*/

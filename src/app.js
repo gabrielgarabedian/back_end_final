@@ -1,17 +1,25 @@
 import express from "express";
 import { ProductManager } from "./persistence/productManagerFiles.js";
+import { productsRouter } from "./routes/products.routes.js";
+import { cartsRouter } from "./routes/carts.routes.js";
+
 
 const managerProductService = new ProductManager("./src/files/products.json")
-console.log(managerProductService)
+//console.log(managerProductService)
 const port = 8080;
 
 const app= express();
 
-app.listen(port,()=>console.log("servidor funcionando"))
+app.listen(port,()=>console.log("servidor funcionando"));
+app.use(express.static("public"));
+app.use(express.json());
+app.use(express.urlencoded({extended:true}))
 
 //rutas
+app.use("/api/products",productsRouter);
+app.use("/api/carts",cartsRouter);
 
-app.get("/products", async(req,res) =>{
+/*app.get("/products", async(req,res) =>{
     try {
         const limit = parseInt(req.query.limit);
 
@@ -37,4 +45,4 @@ app.get("/products/:pid", async (req, res) => {
     } catch (error) {
         res.send(error.message)
     }
-  });
+  });*/
