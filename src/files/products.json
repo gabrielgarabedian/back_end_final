@@ -1,82 +1,20 @@
 [
 	{
 		"id": 1,
-		"title": "Eukanuba",
-		"description": "alimento 12kg",
-		"price": 1869,
-		"stock": 5,
-		"code": 156898
+		"title": "Royal Canin",
+		"description": "comida para mascotas",
+		"price": 12500,
+		"stock": 2,
+		"code": 1406,
+		"category": "alimentos"
 	},
 	{
-		"id": 3,
-		"title": "cat chow",
+		"id": 2,
+		"title": "CatChow premium",
 		"description": "alimento gatos 3kg",
-		"price": 250,
+		"price": 7500,
 		"stock": 6,
-		"code": 14985665
-	},
-	{
-		"id": 4,
-		"title": "cat chow adultos",
-		"description": "alimento gatos 3kg",
-		"price": 250,
-		"stock": 6,
-		"code": 1498566578
-	},
-	{
-		"id": 5,
-		"title": "cat chow cachorros",
-		"description": "alimento gatos 3kg",
-		"price": 2509,
-		"stock": 6,
-		"code": 14985665788989
-	},
-	{
-		"id": 6,
-		"title": "dogui gatos",
-		"description": "alimento gatos 3kg",
-		"price": 856,
-		"stock": 2,
-		"code": 194865
-	},
-	{
-		"id": 7,
-		"title": "dogui perros adultos",
-		"description": "alimento  3kg",
-		"price": 9500,
-		"stock": 2,
-		"code": 1948657789
-	},
-	{
-		"id": 8,
-		"title": "dogui perros medianos",
-		"description": "alimento  3kg",
-		"price": 9500,
-		"stock": 2,
-		"code": 1998
-	},
-	{
-		"id": 9,
-		"title": "dogui perros chicos",
-		"description": "alimento  3kg",
-		"price": 9500,
-		"stock": 2,
-		"code": 1998498948
-	},
-	{
-		"id": 10,
-		"title": "dogui perros cachorros",
-		"description": "alimento  3kg",
-		"price": 9500,
-		"stock": 2,
-		"code": 1998498948889
-	},
-	{
-		"id": 11,
-		"title": "Eukanuba nueva formula",
-		"description": "alimento 100kg",
-		"price": 1869,
-		"stock": 5,
-		"code": 156898889
+		"code": 189856,
+		"category": "alimentos"
 	}
 ]

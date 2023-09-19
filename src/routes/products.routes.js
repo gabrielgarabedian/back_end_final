@@ -1,15 +1,26 @@
 import {Router} from "express";
 import { productsService } from "../persistence/index.js";
+import { uploader } from "../utils.js";
 import res from "express/lib/response.js";
 
 const router = Router()
 
-router.post("/", async (req, res) => {
+router.post("/", uploader.single("file"), async (req, res) => {
     try {
-        const prodInfo = req.body;
-        const {title,description,price,stock,code} = prodInfo
-        await productsService.addProduct(title,description,price,stock,code);
-        res.status(200).json({ message: "Productos cargado" });
+        const prodInfo= req.body;
+        const thumbnail = req.file.originalname;
+        prodInfo.thumbnail = thumbnail;
+        const { title, description, price, stock, code, category } = prodInfo;
+        await productsService.addProduct(
+            title,
+            description,
+            price,
+            stock,
+            code,
+            category,
+            thumbnail
+        );
+        res.status(200).json({ message: "Productos cargado"});
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -66,3 +77,15 @@ router.delete("/:pid", async (req, res) => {
   });
 
 export {router as productsRouter}
+
+/*funciona primera entrega
+router.post("/", async (req, res) => {
+    try {
+        const prodInfo = req.body;
+        const {title,description,price,stock,code,category} = prodInfo
+        await productsService.addProduct(title,description,price,stock,code,category);
+        res.status(200).json({ message: "Productos cargado" });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});*/

@@ -1,0 +1,29 @@
+<h1>Pagina Productos OnLINE</h1>
+
+<h2>Alta de Productos</h2>
+
+<form id="createForm" method="post" enctype="multipart/form-data">
+    <input type="text" placeholder="Nombre Producto" name="title" required/>
+    <br/><br/>
+    <input type="text" placeholder="Descripción Breve" name="description" required/>
+    <br/><br/>
+    <input type="number" placeholder="Precio" name="price" required/>
+    <br/><br/>
+    <input type="number" placeholder="Stock" name="stock" required/>   
+    <br/><br/>
+    <input type="number" placeholder="Codigo de Articulo" name="code" required/>
+    <br/><br/>
+    <input type="text" placeholder="Categoría" name="category" required/>
+    <br/><br/>
+    <input type="file" name="file" />
+    <br/><br/><br/>
+    <button type="submit">Subir</button>
+</form>
+
+<br/><br/><br/>
+<h2> Lista de Productos cargados</h2>
+
+<ul id="productList"></ul>
+
+<script src="socket.io/socket.io.js"></script>
+<script src="js/realTime.js"></script>

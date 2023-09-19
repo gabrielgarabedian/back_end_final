@@ -26,7 +26,7 @@ export class ProductManager {
         }        
     }
 
-    async addProduct(title, description, price, stock, code) {
+    /*async addProduct(title, description, price, stock, code, category, thumbnail) {
         try {
             if (this.fileExist()) {
                 const contenido = await fs.promises.readFile(this.filePath, "utf-8");
@@ -34,7 +34,7 @@ export class ProductManager {
                 const newId = contenidoJson.length > 0 ? contenidoJson[contenidoJson.length - 1].id + 1 : 1;
             
                 // Validar que los campos no estén vacíos y sean numéricos
-                if (!title || !description || isNaN(price) || isNaN(stock) || isNaN(code)) {
+                if (!title || !description || isNaN(price) || isNaN(stock) || isNaN(code) || !category) {
                     throw new Error("No se permiten campos vacíos y los campos price, stock, codigo deben ser numéricos");
                 } else {
                     const isRegistered = contenidoJson.some(product => product.code === parseInt(code));
@@ -48,6 +48,49 @@ export class ProductManager {
                             price: parseFloat(price),
                             stock: parseInt(stock),
                             code:parseInt(code),
+                            category,
+                            thumbnail,
+                        };
+                        contenidoJson.push(newProduct);
+                        await fs.promises.writeFile(this.filePath, JSON.stringify(contenidoJson, null, "\t"));
+                        console.log("Producto agregado exitosamente");
+                    }
+                }
+            } else {
+                throw new Error("El artículo no se pudo agregar");
+            }
+        } catch (error) {
+            console.log(error.message);
+            throw error;
+        }
+    }*/
+
+    async addProduct(product) {
+        try {
+            if (this.fileExist()) {
+                const contenido = await fs.promises.readFile(this.filePath, "utf-8");
+                const contenidoJson = JSON.parse(contenido);
+                const newId = contenidoJson.length > 0 ? contenidoJson[contenidoJson.length - 1].id + 1 : 1;
+            
+                // Validar que los campos no estén vacíos y sean numéricos
+                if (!product.title || !product.description || isNaN(product.price) || isNaN(product.stock) || isNaN(product.code) || !product.category) {
+                    throw new Error("No se permiten campos vacíos y los campos price, stock, codigo deben ser numéricos");
+                } else {
+                    const isRegistered = contenidoJson.some(prod => prod.code === parseInt(product.code));
+                    if (isRegistered) {
+                        //throw new Error("codigo Ya registrado");
+                        alert("¡Código ya registrado! Por favor, ingresa un código diferente.");
+                        return;
+                    } else {
+                        const newProduct = {
+                            id: newId,
+                            title: product.title,
+                            description: product.description,
+                            price: parseFloat(product.price),
+                            stock: parseInt(product.stock),
+                            code: parseInt(product.code),
+                            category: product.category,
+                            thumbnail: product.thumbnail,
                         };
                         contenidoJson.push(newProduct);
                         await fs.promises.writeFile(this.filePath, JSON.stringify(contenidoJson, null, "\t"));
@@ -119,7 +162,8 @@ export class ProductManager {
                 const updatedProducts = contenidoJson.filter(producto => producto.id !== id);
     
                 await fs.promises.writeFile(this.filePath, JSON.stringify(updatedProducts, null, "\t"));
-                console.log("Producto eliminado exitosamente");
+                alert("Producto eliminado exitosamente");
+                return;
             } else {
                 throw new Error("Archivo inexistente imposible eliminar");
             }
