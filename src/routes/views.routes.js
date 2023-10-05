@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { productsService } from "../persistence/index.js";
+import { productsService } from "../dao/index.js";
 
 const router = Router();
 
@@ -11,6 +11,10 @@ router.get("/", async(req,res)=>{
 
 router.get("/realtimeproducts", (req,res)=>{
     res.render("realTime");
+})
+
+router.get("/chat", (req,res)=>{
+    res.render("chat");
 })
 
 export {router as viewRouter};

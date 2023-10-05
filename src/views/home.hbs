@@ -1,9 +1,15 @@
 <h1>Esta funcionando correctamente Home</h1>
 
+<div>
 {{#each products}}
     <div>
-        <h2>Producto : {{this.title}}</h2>
-        <h3>Precio $ {{this.price}}</h3>
-        <img src="{{this.thumbnail}}" alt="Imagen del producto" width="300" height="200">
+        <div>
+            <img src="{{this.thumbnail}}" alt="{{this.title}}" />
+        </div>
+        <div>
+           <h2>Producto : {{this.title}}</h2>
+           <h3>Precio $ {{this.price}}</h3>
+        </div>
     </div>
 {{/each}}
+</div>

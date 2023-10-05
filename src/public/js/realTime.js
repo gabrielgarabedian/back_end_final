@@ -41,7 +41,7 @@ socketClient.on("error", (errorMessage) => {
 });
 socketClient.on("message", (message) => {
     alert(message);
-  });
+});
 
 function deleteProduct(productId) {
     socketClient.emit("deleteProduct", productId);

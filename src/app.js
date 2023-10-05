@@ -1,46 +1,66 @@
 import express from "express";
-import { ProductManager } from "./persistence/productManagerFiles.js";
+import { ProductManager } from "./dao/productManagerFiles.js";
+import { productsService } from "./dao/index.js";
+import { chatService } from "./dao/index.js";
 import { __dirname } from "./utils.js";
 import path from "path";
 import { engine } from "express-handlebars";
 import {Server} from "socket.io";
 import { viewRouter } from "./routes/views.routes.js";
-import { productsService } from "./persistence/index.js";
 import { productsRouter } from "./routes/products.routes.js";
 import { cartsRouter } from "./routes/carts.routes.js";
 import { uploader } from "./utils.js";
-
-
+import { connect } from "http2";
+import { connectDB } from "./config/dbConnection.js";
 
 const managerProductService = new ProductManager("./src/files/products.json")
-//console.log(managerProductService)
-const port = 8080;
-
+const port = process.env.PORT || 8080;
 const app= express();
-
-const httpServer = app.listen(port,()=>console.log(`servidor funcionando ${port}`));
-
-//servidro webSocket
-const io = new Server(httpServer);
-
-//configuración Handlerbars
-app.engine('.hbs', engine({extname: '.hbs'}));
-app.set('view engine', '.hbs');
-app.set('views', path.join(__dirname,"/views"));
 
 // middleware.
 app.use(express.static(path.join(__dirname,"/public")));
 app.use(express.json());
 app.use(express.urlencoded({extended:true}))
 
+//Servidor express http
+const httpServer = app.listen(port,()=>console.log(`servidor funcionando ${port}`));
+//servidor webSocket
+const io = new Server(httpServer);
+//conexion atlas DB
+connectDB();
+
+//configuración Handlerbars
+app.engine('.hbs', engine({extname: '.hbs'}));
+app.set('view engine', '.hbs');
+app.set('views', path.join(__dirname,"/views"));
+
 //rutas
 app.use(viewRouter);
 app.use("/api/products",productsRouter);
 app.use("/api/carts",cartsRouter);
 
+let chat =[];
 //socket Server
 io.on("connection", async(socket)=>{
     console.log("Cliente conectado");
+    console.log("Cliente conectado al chat");
+
+    //io del chat
+    //historial del usuario
+    socket.emit("chatHistory", chat);
+    //recibimos del usuario
+    socket.on("msgChat",(data)=>{
+        chat.push(data);
+        //enviamos a todos el historial
+        io.emit("chatHistory", chat)
+        
+    })
+    //notificacion de nuevo usuario conectado
+    socket.on("authenticated", (data)=>{
+        socket.broadcast.emit("newUser", `User ${data} se acaba de conectar`);
+    });
+
+    //io de productos
     const products = await productsService.getProducts();
     socket.emit("Product Array", products);
 
@@ -53,7 +73,7 @@ io.on("connection", async(socket)=>{
         } catch (error) {
             socket.emit("error", error.message);
         }
-      });
+    });
 
     // Recibir datos para eliminar un producto
     socket.on("deleteProduct", async (productId) => {
@@ -68,7 +88,9 @@ io.on("connection", async(socket)=>{
             socket.emit("error", error.message);
         }
     });
-         //recibir data
+});
+
+/*     //recibir data
     /*socket.on("addProduct", async(productData)=>{
         await productsService.addProduct(productData);
         const products = await productsService.getProducts();
@@ -113,7 +135,7 @@ io.on("connection", async(socket)=>{
         io.emit("Product Array", products); 
         console.log(products); 
     });*/
-});
+//});
 
 
 ///////////////////////////////////////////////////////////////////////////
@@ -146,4 +168,5 @@ app.get("/products/:pid", async (req, res) => {
     } catch (error) {
         res.send(error.message)
     }
-  });*/
+});
+  */

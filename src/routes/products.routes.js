@@ -1,10 +1,73 @@
 import {Router} from "express";
-import { productsService } from "../persistence/index.js";
+import { productsService } from "../dao/index.js";
 import { uploader } from "../utils.js";
-import res from "express/lib/response.js";
+//import res from "express/lib/response.js";
 
 const router = Router()
 
+//mongo
+
+//enviar
+router.post("/", async (req, res) => {
+    try {
+        const { title, description, price, stock, code, category, thumbnail } = req.body;
+        if (typeof title !== 'undefined' && typeof description !== 'undefined' && typeof price !== 'undefined' 
+            && typeof stock !== 'undefined' && typeof code !== 'undefined' && typeof category !== 'undefined') {
+            const product = {
+                title,
+                description,
+                price,
+                stock,
+                code,
+                category,
+                thumbnail
+            };
+            const result = await productsService.addProduct(product);
+            res.status(200).json({ status: "SUCCESS", data: result });
+        } else {
+            throw new Error("Falta información para crear el producto");
+        }
+    } catch (error) {
+        res.status(500).json({ status: "ERROR", message: error.message });
+    }
+});
+
+//traer
+router.get("/", async (req, res) => {
+    try {
+        const products = await productsService.getProducts();
+            res.json({ status:"SUCCESS", data: products });
+    } catch (error) {
+        res.status(500).json({ status: "ERROR", message: error.message });
+    }
+});
+
+//busca y actualiza
+router.put('/:pid', async (req, res) => {
+    try {
+        const productId = req.params.pid;
+        const updatedFields = req.body;
+        const result= await productsService.updateProduct(productId, updatedFields);
+        res.json({ message: "Producto actualizado exitosamente.", data: result });
+    } catch (error) {
+        res.status(500).json({ status: "ERROR", message: error.message });
+    }
+});
+
+//elimina
+router.delete('/:pid', async (req, res) => {
+    try {
+        const productId = req.params.pid;
+        const result= await productsService.deleteProduct(productId);
+        res.json({ message: "Producto ELIMINADO exitosamente.", data: result });
+    } catch (error) {
+        res.status(500).json({ status: "ERROR", message: error.message });
+    }
+});
+
+
+/// segunda entrega
+/*
 router.post("/", uploader.single("file"), async (req, res) => {
     try {
         const prodInfo= req.body;
@@ -74,9 +137,9 @@ router.delete("/:pid", async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Error al eliminar el producto", error: error.message });
     }
-  });
+  });*/
 
-export {router as productsRouter}
+export {router as productsRouter};
 
 /*funciona primera entrega
 router.post("/", async (req, res) => {
