@@ -46,8 +46,12 @@ io.on("connection", async(socket)=>{
     console.log("Cliente conectado al chat");
 
     //io del chat
+    const messageDB = await chatService.getMessage();
+    
     //historial del usuario
     socket.emit("chatHistory", chat);
+    //socket.emit("chatHistory", messageDB);
+
     //recibimos del usuario
     socket.on("msgChat",(data)=>{
         chat.push(data);
@@ -55,6 +59,14 @@ io.on("connection", async(socket)=>{
         io.emit("chatHistory", chat)
         
     })
+    /*socket.on("msgChat", async (data) => {
+        if (data.message.trim() !== "") {
+          await chatService.addMessage(data); // Agregar mensaje a la base de datos
+          const updatedMessageDB = await chatService.getMessage(); // Obtener el historial actualizado
+          io.emit("chatHistory", updatedMessageDB);
+        }
+      });*/
+
     //notificacion de nuevo usuario conectado
     socket.on("authenticated", (data)=>{
         socket.broadcast.emit("newUser", `User ${data} se acaba de conectar`);
