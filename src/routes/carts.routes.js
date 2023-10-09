@@ -1,23 +1,23 @@
 import {Router} from "express";
 import { cartsService} from "../dao/index.js";
 
-
 const router = Router()
 
+//crea el carrito
 router.post("/",async(req,res)=>{
     try {
         const newCarts = await cartsService.addCarts();
-        res.json({ message: "Se Cargo el carrito", data: newCarts });
+        res.json({ message: "Se Cargo el carrito en la base ecommerce", data: newCarts });
         
     } catch (error) {
-        res.status(500).json({ message: "Error el Carrito con productos", error: error.message });
+        res.status(500).json({ message: "Error al subir el Carrito con productos", error: error.message });
     }
 })
 
 router.get("/", async (req, res) => {
     try {
         const carts = await cartsService.getCarts();
-        res.json({ message: "Listado de Carritos", data: carts });
+        res.json({ message: "Listado de Carritos NUEVA", data: carts });
         
     } catch (error) {
         res.status(500).json({ message: "Error al obtener los Carrito con productos", error: error.message });
@@ -39,24 +39,20 @@ router.get("/:cid", async (req, res) => {
     }
 });
 
+//cargar el producto en el carrito
 router.post("/:cid/product/:pid", async (req, res) => {
     try {
-        
-        const productId = parseInt(req.params.pid);
-        //console.log(productId)
-        const cartId = parseInt(req.params.cid);
-        //console.log(cartId)
+        //const productId = parseInt(req.params.pid);
+        //const cartId = parseInt(req.params.cid);
         const productCarts = await cartsService.addProductToCart(cartId,productId);
-        //console.log(cart)
-        
-                res.status(200).json({ message: "El producto fue agregado con existe", data:productCarts});
+        res.status(200).json({ message: "El producto fue agregado con existe", data:productCarts});
          
     } catch (error) {
-        res.status(500).json({ message: "Error al agregar el producto al carrito ....",error: error.message});
+        res.status(500).json({ message: "Error al agregar el producto al carrito .... MONNNNNGO",error: error.message});
     }
 });
 
-export {router as cartsRouter}
+export {router as cartsRouter};
 
 /*router.post("/:cid/product/:pid", async (req, res) => { 
     try { 

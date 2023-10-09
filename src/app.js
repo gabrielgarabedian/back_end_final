@@ -46,7 +46,7 @@ io.on("connection", async(socket)=>{
     console.log("Cliente conectado al chat");
 
     //io del chat
-    const messageDB = await chatService.getMessage();
+    //const messageDB = await chatService.getMessage();
     
     //historial del usuario
     socket.emit("chatHistory", chat);
@@ -58,7 +58,7 @@ io.on("connection", async(socket)=>{
         //enviamos a todos el historial
         io.emit("chatHistory", chat)
         
-    })
+    });
     /*socket.on("msgChat", async (data) => {
         if (data.message.trim() !== "") {
           await chatService.addMessage(data); // Agregar mensaje a la base de datos

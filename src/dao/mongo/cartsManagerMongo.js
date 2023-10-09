@@ -6,7 +6,7 @@ export class CartsManagerMongo {
         this.model = cartsModel;
     }
 
-    async addCart() {
+    async addCarts() {
         try {
             const carts = await this.model.find();
             const lastCart = carts[carts.length - 1];
@@ -18,7 +18,7 @@ export class CartsManagerMongo {
             await this.model.create(newCart);
             return newCart;
         } catch (error) {
-            throw new Error("No se puede agregar el carrito");
+            throw new Error("No se puede agregar el carrito NUEVO DE MONGO");
         }
     }
 
@@ -72,7 +72,7 @@ export class CartsManagerMongo {
             throw error;
         }
     }
-}
+};
 
 
 

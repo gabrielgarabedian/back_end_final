@@ -15,7 +15,7 @@ router.get("/realtimeproducts", (req,res)=>{
 })
 
 
-app.get("/chat", async (req, res) => {
+/*app.get("/chat", async (req, res) => {
     try {
         const messages = await chatService.getMessage();
         res.render("chat", { messages });
@@ -23,6 +23,6 @@ app.get("/chat", async (req, res) => {
         console.error(error);
         res.status(500).send("Error al obtener los mensajes del chat");
     }
-});
+});*/
 
 export {router as viewRouter};

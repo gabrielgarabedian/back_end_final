@@ -19,7 +19,7 @@ export class ProductManagerMongo {
 
     async getProducts(){
         try {
-            const result =await this.model.find();
+            const result =await this.model.find({}).lean();
             return result;
         } catch (error) {  
             console.log("getProducts", error.message);
